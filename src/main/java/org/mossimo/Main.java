@@ -16,7 +16,7 @@ public class Main extends Student {
         information from Student file
          */
 
-        Student s1 = new Student(); // default constructor
+        Student s1 = new Student("Bob", "male", 20); // default constructor
         /*
         Same structure as:
 
@@ -24,14 +24,17 @@ public class Main extends Student {
         Scanner sc = new Scanner(System.in);
          */
 
-        Student s2 = new Student();
+        Student s2 = new Student("Janice", "female", 12);
         s2.sayHi();
         /*
         example for 'extends'
          */
 
-        Student s3 = new Student();
-        Student s4 = new Student();
+        Student s3 = new Student("John", "male", 38);
+        Student s4 = new Student("Sylvia", "female", 22);
+        Student s5 = new Student();
+        Student s6 = new Student();
+        Student s7 = s5;
 
         System.out.println(s1);
         /*
@@ -42,6 +45,11 @@ public class Main extends Student {
         (a number that represents the object's memory address)
          */
 
+        System.out.println(s2);
+        System.out.println(s3);
+        System.out.println(s4);
+        System.out.println(s5 == s7);
+        System.out.println(s5.equals(s6));
 
         }
     }

@@ -1,6 +1,10 @@
 package org.mossimo;
 
 public class Student {      // blueprint for creating a new data class
+    // example for 'extends'
+    public void sayHi() {
+        System.out.println("Hi");
+    }
 
     // data member (field)
     private String name;
@@ -10,14 +14,14 @@ public class Student {      // blueprint for creating a new data class
     // Constructor method (build a new object)
     /*
     Used to build an object
-        1. Always public
+        1. Always (99.9%) public
         2. Always non-static (no static)
         3. Always no return type (no void)
         4. The name MUST be the same as the class name (Student)
         5. Usually overload
      */
 
-    // Default constructor
+    // Default constructor or no argument constructor
     public Student() {
         this.name = "Mike"; // this student's name
         this.gender = "male"; // this student's gender
@@ -26,14 +30,24 @@ public class Student {      // blueprint for creating a new data class
         The 'this.' keyword is a reference to the current object
         within an instance method or a constructor
          */
-
-
     }
 
-    // example for 'extends'
-    public void sayHi() {
-        System.out.println("Hi");
+    // All arguments constructor
+    public Student(String name, String gender, int age) {
+        this.name = "Mike";
+        this.gender = "male";
+        this.age = 18;
     }
 
+    // converts object to string
+    // usually used for output
+    public String toString() {
+        return String.format("Name: %s", "Gender: %s", "Age: %d", name, gender, age);
+    }
 
+    public boolean equals(Student student) {
+        return this.name.equals(student.name) &&
+            this.gender.equals(student.gender) &&
+            this.age  == student.age;
+    }
 }
