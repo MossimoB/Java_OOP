@@ -1,0 +1,653 @@
+# Lesson09 Object-oriented Programming
+
+## 1. Procedural Programming VS Object-oriented Programming
+
+***Object-Oriented Programming (OOP)*** is one of the core concepts in Java. In fact, Java is fully OOP-based, meaning that all code must be written within classes.
+
+In traditional procedural programming, the focus is on performing specific tasks â€” for example, implementing a process like registering for a course.
+
+In contrast, OOP focuses on the objects involved in those tasks. For instance, when a student registers for a course, both the student and the course are the key objects affected by this action.
+
+Rather than simply chaining methods together to complete a task, OOP encapsulates related **fields** (data) and **methods** (behavior) inside classes, and then uses these classes to create objects that interact with each other.
+
+## 2. Class VS Object
+
+Object-Oriented Programming (OOP) always defines **fields** and **methods** inside classes.
+A class typically represents a noun, such as `Student`, `Course`, `Cat`, `Restaurant`, or `User`.
+
+A class can be thought of as a user-defined data type, and you can create objects from it just like you create variables from primitive data types.
+
+```java
+int num1;
+int num2;
+
+Cat cat1;
+Cat cat2;
+```
+
+The actual values are stored in objects, not in classes, just like values are stored in variables, not in primitive data types.
+That's why people often say a class is an abstract blueprint, while the object is the real instance created from that blueprint.
+
+### 2.1 Class Definition
+
+A class typically consists of two main parts:
+1. Data members (fields)
+2. Methods
+
+***IMPORTANT: All members within the same class can access each other.***
+
+Data members are used to store data of objects of the class, while methods control the behaviors of objects of the class.
+
+For example, if we want to create a `Student` class, we need to have a data member to store the name of a student, which should be a `String`, we may also need to know its gender, which should also be a `String` (it will be replaced by Enum in the future), assume we need to store its age, it could be an `int`. You can have as many data members in a class as you want.
+
+***IMPORTANT: Currently all data members should be `private`.***
+
+```java
+public class Student{
+    private String name;
+    private String gender;
+    private int age;
+}
+```
+
+Now that you have a simple class, you can create a `Student` object that holds three pieces of information: the studentâ€™s name, gender, and age. To test this, you can create an object inside the main method as shown below:
+
+```java
+public static void main(String[] ages) {
+    Student student;
+}
+```
+
+Right now, we canâ€™t assign a name, gender, or age to that object, because unlike primitive variables, we canâ€™t simply put a value on the right side of an `=` sign to initialize an object.
+
+To achieve this, we need to use special methods called ***constructors***.
+
+***Constructors*** are methods that create and initialize objects of a class. They are usually declared as `public`, since we often need to call them from other classes. Constructors are always ***non-static*** and have no return type (not even `void`). Their names must be exactly the same as the class name. For example, all constructors of the `Student` class must be named `Student`. Constructors are the only methods in Java that start with an uppercase letter.
+
+The main purpose of a constructor is to initialize the data members of a class when an object is created. In this example, the `Student` class contains three data members, so each `Student` object should have a name, gender, and age. We can use a constructor to assign values to them when the object is created.
+
+```java
+// example of a default constructor
+public Student() {
+    this.name = "Yi Wang";
+    this.gender = "male";
+    this.age = 39;
+}
+```
+
+In this example, the constructor doesnâ€™t take any parameters, so itâ€™s called a ***no-argument constructor*** or ***default constructor***. A default constructor is typically used to assign default values to the data members of a class.
+
+The keyword `this` refers to the current object â€” the specific instance of the class that is being used. The dot operator (`.`) is a syntactic element used to access members (fields or methods) of a class or object. It acts as a separator operator, distinguishing between a reference variable and the member being accessed. You can think of it as similar to the English possessive â€™s.
+For example, `this.name` means â€œthis objectâ€™s name.â€ Since this class is `Student`, it can also be understood as â€œthis studentâ€™s name.â€
+
+Therefore, this constructor doesnâ€™t receive any parameters and assigns default values to the student:
+- `name` â†’ `"Yi Wang"`
+- `gender` â†’ `"male"`
+- `age` â†’ `39`
+
+A class can have multiple constructors with different parameter lists. This is known as constructor overloading, and it allows objects of the class to be initialized in various ways.
+
+```java
+// example of a all arguments constructor
+public Student(String name, String gender, int age) {
+    this.name = name;
+    this.gender = gender;
+    this.age = age;
+}
+```
+
+These two constructors are defined in the same class, share the same name, but have different parameter lists â€” therefore, they are overloaded constructors.
+
+The second constructor accepts three parameters. Since the class also has three data members, this constructor is known as an ***all-arguments constructor*** (each parameter corresponds to an argument for a field).
+
+Inside this constructor, youâ€™ll notice two variables named name:
+- `this.name` refers to the data member (the field `private String name`) that belongs to the object.
+- `name` without `this` refers to the local variable declared in the parameter list.
+
+Hence, the statement `this.name = name;` assigns the value of the parameter name to the data member name. The same logic applies to gender and age.
+As mentioned earlier, all members within the same class can access one another, so the constructor can directly modify data members defined outside its own block.
+
+In theory, you can create as many overloaded constructors as you like, but the no-argument constructor and the all-arguments constructor are the ones most commonly used.
+
+If a class does not explicitly define any constructor, Java automatically provides a default constructor. This automatically generated constructor initializes all fields with their default values â€” numeric types like `int` and `double` are set to 0, while reference types like String or objects are set to `null`.
+
+```java
+// If there is no constructor for Student class, Java will provide a default one
+public Strudent() {
+    this.name = null;
+    this.gender = null;
+    this.age = 0;
+}
+```
+
+`null` is a special value that can be assigned to any object reference. It indicates that the reference does not point to any actual object in memory. In other words, the object reference exists, but it doesnâ€™t refer to any allocated memory that stores data.
+
+If an object reference is null, you cannot use the dot operator (`.`) to access its data or methods because there is no real object behind the reference. Doing so will trigger a `NullPointerException` (NPE) â€” an error that occurs when your code tries to use a non-existent object.
+
+Once a class defines constructors, we can use them to initialize objects properly. Returning to the `main()` method, we can now create and initialize a Student object using one of the constructors.
+
+```java
+public static void main(String[] ages) {
+    // initialize the object with NoArgumentConstructor
+    Student student1 = new Stduent();
+
+    // initialize the object with AllArgumentsConstructor
+    Student student1 = new Stduent("John Snow", "male", 20);
+}
+```
+
+In these examples, we used the keyword new together with a specific constructor to create a new object. The keyword new is responsible for allocating memory and instantiating an object of a class.
+
+Youâ€™ve already seen this pattern before â€” for example, when we worked with the `Random` class:
+
+``` java
+Random rand = new Random();
+```
+
+This statement creates an object of the `Random` class using its default constructor.
+
+### 2.2 Memory Allocation
+
+Memory allocation works differently for objects compared to primitive data type variables.
+
+A primitive variable occupies a single memory location. For instance, an `int` variable uses 4 bytes, and a `double` uses 8 bytes. The value is stored directly in that memory location. This is why we can use `==` to compare primitive variables. For example:
+
+``` java
+int num = 5;
+```
+
+Here, `num` directly holds the value 5.
+
+Objects, however, involve two memory locations:
+1. Reference â€“ stores the memory address of the actual object.
+2. Object data â€“ stores the real values of the objectâ€™s fields.
+
+For example:
+
+``` java
+Student student = new Student();
+```
+
+In this case, student is the reference. It does not store the studentâ€™s name, gender, or age directly; it only holds the address of the memory where those values are stored, e.g., `@30f39991`. The actual data members reside in that second memory location.
+
+This difference leads to some important considerations:
+1. Printing an object â€“ `System.out.print(student);` will not show the objectâ€™s data because the reference only holds an address.
+2. Comparing objects â€“ `student1 == student2` only compares references, not the actual values of the objects. Two objects with identical data members can still have different memory addresses.
+
+We will discuss solutions to these issues in the following sections.
+
+### 2.3 `equals()` Method
+
+Since we cannot reliably compare objects using `==` (because `==` only compares memory addresses), we need another way to compare their actual data.
+
+When comparing two objects, we usually want to check whether the values of their fields are the same. For example, for two Student objects, we may want to check if their name, gender, and age are identical. If all fields match, we consider the two students to be the same.
+
+To achieve this, we can define an `equals()` method in the class:
+
+```java
+public boolean equals(Student student) {
+    return this.age == student.age &&
+            this.name.equals(student.name) &&
+            this.gender.equals(student.gender);
+}
+```
+
+Explanation:
+- The `equals()` method takes another Student object as a parameter.
+- age is an `int`, so we can compare it directly with `==`.
+- `name` and `gender` are `String` objects, so we use the `String` classâ€™s `equals()` method to compare their values. Thatâ€™s why we write `this.name.equals(student.name)`.
+
+Now, we can compare two objects correctly:
+
+```java
+public static void main(String[] args) {
+    Student s1 = new Student();
+    Student s2 = new Student();
+
+    // compare two objects by using ==
+    System.out.print(s1 == s2);              // false
+    // compare two objects by using equals()
+    System.out.print(s1.equals(s2));         // true
+}
+```
+
+### 2.4 `toString()` Method
+
+We also cannot print an object directly because the reference only contains the memory address of the object. To display meaningful information, we define a method named `toString()`, which converts the object into a readable String.
+
+For a Student class with `name`, `gender`, and `age`, the method could be written as:
+
+```java
+@Override
+public String toString() {
+    return "Student{" +
+            "name='" + name + '\'' +
+            ", gender='" + gender + '\'' +
+            ", age=" + age +
+            '}';
+}
+```
+
+Explanation:
+- This method reads the values of name, gender, and age, concatenates them into a single string, and returns it.
+- The `@Override` annotation indicates that this method overrides the default `toString()` from the Object class. (We will explain `@Override` more fully when discussing inheritance.)
+
+You usually do not need to call `toString()` manually since Java calls it automatically. Unless a method requires a String parameter and you want to pass an object to it:
+- When you print an object using `System.out.print()`, `System.out.println()` or `System.out.printf()`.
+- When you concatenate an object with a String.
+
+```java
+public static void main(String[] args) {
+    Student s = new Student();
+
+    // if there is no toString() in the Student class
+    // an address will be printed @30f39991
+    System.out.print(s);
+
+    // if there is a toString() in the Student class
+    // toString() will be called automatically and print the object as a string
+    // print Student{name="Yi Wang", gender="male", age=39}
+    System.out.print(s);
+}
+```
+
+### 2.5 Getter and Setter
+
+Data members in a class are usually declared `private`, which restricts access to only other members of the same class. This encapsulation helps protect the internal state of objects.
+
+If we need to access or modify these members from outside the class, we should not make them `public` directly (this can be risky). Instead, we provide ***getter*** and ***setter*** methods, which allow controlled access to private fields.
+
+For example, in the `Student` class:
+
+```java
+public class Student {
+    private String name;
+    private String gender;
+    private int age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+- `getName()` is a getter: it has no parameters and returns the value of the private `name` field.
+- `setName()` is a setter: it takes a `String` argument and updates the private `name` field.
+
+Both methods are `public`, so they can be used in other classes while still protecting the underlying data.
+
+Benefits of getters and setters:
+
+1. Controlled access: You can provide a getter to allow reading a value or a setter to allow modification, without exposing the field directly. If no getter/setter is provided, the field remains inaccessible outside the class.
+2. Custom logic: Getters and setters can include additional logic beyond simple read/write. For example:
+
+    ```java
+    /**
+     * fetches the name of the student, but hide all characters except the first and the last.
+     */
+    public String getName() {
+        int len = name.length();
+        String hiddenName = name.charAt(0);
+
+        for (int i = 0; i < name.length() - 2; i++) {
+            hiddenName += "*";
+        }
+
+        return hiddenName + name.charAt(len - 1) ;
+    }
+    ```
+
+    ```java
+    /**
+     * udpates the name of the student, the input name is converted to titlecase first
+     * @param name the new name of the student
+     */
+    public void setName(String name) {
+        this.name = name.charAt(0).toUpperCase() + name.substring(1).toLowerCase();
+    }
+    ```
+
+Usage example:
+
+```java
+public static void main(String[] args) {
+    Student s = new Student();
+
+    // calling getName() in the Main class to read the student name
+    System.out.print(s.getName());
+
+    // calling setName() in the Main class to modify the student name
+    s.setAge(20);
+}
+```
+
+### 2.6 Using Code Completion
+
+In the previous sections, we explored several common methods in a class, such as constructors, `equals()`, `toString()`, getters, and setters. Most of these methods follow a standard pattern, which means their structure is very similar regardless of the classâ€”whether itâ€™s a `Cat`, `Dish`, or `User`. The only part you usually need to define manually is the data members.
+
+For example, in a `Student` class, you decide that the class should have `name`, `gender`, and `age` fields. Once the data members are defined, modern IDEs can generate the standard methods for you automatically.
+
+In IntelliJ IDEA, you can do this as follows:
+1. Open the class in the editor.
+2. Go to the menu: `Code â†’ Generate` (or press `Alt + Insert` / `Cmd + N`).
+3. In the pop-up menu, select the methods you want to generate, such as constructors, getters, setters, or `toString()`.
+
+Note:
+- To generate the `equals()` method, choose `equals()` and `hashCode()` from the pop-up menu.
+- The `hashCode()` method is not required for this semester, but you can still generate it and leave it in the class without any issue.
+
+Using code generation saves time and ensures that your methods are consistent and error-free.
+
+### 2.7 Using `lombok` Dependency
+
+Even though we can generate methods like constructors, `toString()`, `equals()`, getters, and setters, they can take up a lot of space in a class. If your class also contains other user-defined methods, these standard methods may make it harder to find your custom code. Ideally, we could use these methods without explicitly writing them in the class.
+
+The ***Lombok*** library solves this problem. Lombok is a third-party library, meaning it is not part of the JDK but is written by other developers. Once added to a project, you can use Lombok just like any standard JDK feature.
+
+Traditionally, adding a third-party library involved downloading its source code and placing it in your project folder. This approach has two drawbacks:
+1.	Your project directory can become cluttered.
+2.	Third-party libraries frequently update, and manually tracking new versions can be tedious and error-prone.
+
+Using a build system like ***Maven*** or ***Gradle*** avoids these issues. This course uses Maven as an example, though Gradle works similarly.
+
+Adding Lombok with Maven
+1.	Search online for â€œlombok mavenâ€ to find the latest Maven dependency.
+2.	Copy the dependency snippet into your projectâ€™s `pom.xml` file:
+
+    ```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    ```
+
+    A full `pom.xml` might look like this:
+
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project xmlns="http://maven.apache.org/POM/4.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+
+        <groupId>org.yi</groupId>
+        <artifactId>Test1</artifactId>
+        <version>1.0-SNAPSHOT</version>
+
+        <properties>
+            <maven.compiler.source>21</maven.compiler.source>
+            <maven.compiler.target>21</maven.compiler.target>
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        </properties>
+
+        <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.42</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </project>
+    ```
+
+3.	After updating the pom.xml, the newly added code may appear in red. Click the â€œMâ€ (Maven) button in IntelliJ to reload the project. Maven will download the Lombok library, link it to your project, and remove any errors.
+4.	For other projects, you simply repeat this process by adding Lombok as a dependency in the respective pom.xml.
+
+Using Lombok Annotations
+
+Once Lombok is added, you can use its annotations to automatically generate common methods:
+
+| Annotation            | Purpose                                       |
+| --------------------- | --------------------------------------------- |
+| `@NoArgsConstructor`  | Generates a no-argument constructor           |
+| `@AllArgsConstructor` | Generates a constructor with all arguments    |
+| `@ToString         `  | Generates a `toString()` method               |
+| `@EqualsAndHashCode`  | Generates `equals()` and `hashCode()` methods |
+| `@Getter           `  | Generates getters for all fields.             |
+| `@Setter           `  | Generates setters for all fields.             |
+
+Example:
+
+```java
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
+public class Student {
+    private String name;
+    private String gender;
+    private int age;
+}
+```
+
+With these annotations, the Student class now automatically has:
+- Two constructors (no-arg and all-arg)
+- `toString()`
+- `equals()` and `hashCode()`
+- Getters and setters for all fields
+
+This makes the class much cleaner while still providing full functionality.
+
+## 3. Static VS Non-static
+
+In previous lessons, we have seen some `static` methods such as `main()` and other utility methods. In contrast, the methods discussed in this lesson are all non-static. This section explains the difference between static and non-static members.
+- ***Static*** members belong to the class.
+- ***Non-static*** members belong to objects.
+
+Take the `Student` class as an example. Each student object has its own name, age, and gender. These data members are non-static because they belong to individual objects. Changing one studentâ€™s name does not affect other students.
+
+Now, consider a scenario where all students belong to the same school, e.g., "VanierCollege". If we created a non-static school member for each student:
+1.	Each object would store its own copy of "VanierCollege". For 5,000 students, this wastes memory.
+2.	If the college changes its name, we would need to update every single student object manually.
+
+The solution is to make the school member `static`. A static member belongs to the class rather than to any object. Since there is only one `Student` class, the school member has a single copy shared by all student objects. Changing its value, e.g., from "VanierCollege" to "YiCollege", automatically updates it for all students.
+
+Because static members belong to the class, they are usually initialized when declared, rather than in a constructor, which is used to initialize object-specific data.
+
+For example:
+
+```java
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
+public class Student {
+    private String name;
+    private String gender;
+    private int age;
+
+    private static String school = "VanierCollege";
+}
+```
+
+To access a ***non-static*** member, you must use an object of the class. In contrast, a ***static*** member is accessed directly through the class name.
+
+```java
+public static void main(String[] args) {
+    Student student = new Student();
+
+    // access a non-static member through an object
+    System.out.print(student.getName());
+
+    // access a static member through a class
+    System.out.print(Student.getSchool());
+}
+```
+
+***IMPORTANT: A non-static member can access both static and non-static members, while a static member can only access other static members. This is because non-static members belong to individual objects, whereas a static member belongs to the class itself. If a static member tries to access a non-static member, it does not know which objectâ€™s value it should refer to.***
+
+```java
+public class Student {
+    private String name;
+    private String gender;
+    private int age;
+
+    private static String school = "VanierCollege";
+
+    // static method
+    public static void m1() {
+        // correct: a ststic member can access static members
+        System.out.printf("School: %s\n", school);
+
+        // error: a ststic member cannot access non-static members
+        System.out.printf("Name: %s\n", name);
+    }
+
+    // non-static method
+    public void m2() {
+        // correct: a non-ststic member can access static members
+        System.out.printf("School: %s\n", school);
+
+        // correct: a non-ststic member can access non-static members
+        System.out.printf("Name: %s\n", name);
+    }
+}
+```
+
+When designing a class, always ask yourself whether a method needs to access any ***non-static*** fields. If it does, the method should be ***non-static***; otherwise, it can be declared ***static***.
+
+
+### 3.1 Constant
+
+If a static field in a class will never change, it is called a ***constant***. A constant should be declared using both the `static` and `final` keywords. The `final` keyword ensures that the value cannot be modified after it is assigned.
+
+To make constants easily recognizable, their names are written in all uppercase letters, using underscores to separate words (snake case). This is the only case where we do not use camelCase for naming.
+
+Example:
+
+```java
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
+public class Student {
+    private String name;
+    private String gender;
+    private int age;
+
+    // constant, with two keywords: static and final
+    private static final String SCHOOL_NAME = "VanierCollege";
+}
+```
+
+## 4. User-defined Methods in A Class
+
+Methods inside a class are slightly different from the standalone methods we have seen before because they often interact with the classâ€™s data members.
+
+1.	Non-static by default
+
+    Since most data members are non-static and methods need to access them, these methods are usually non-static as well.
+
+2.	Accessing data members directly
+
+    Members of the same class can access each other. Therefore, the formal parameter list and return type of a method might differ from what we used before.
+
+    For example, consider checking whether a student is an adult. Previously, we might write:
+
+    ```java
+    public static boolean isAdult(int age) {
+        return age >= 18;
+    }
+    ```
+
+    Here, `age` is passed as a parameter. However, if `age` is a data member of the class:
+
+    ```java
+    private int age;
+
+    public static boolean isAdult() {
+        return age >= 18;           // directly access to the data member age
+    }
+    ```
+
+3.	Modifying data members directly
+
+    Local variables in a method are destroyed when the method finishes. In standalone methods, we had to return values to preserve them:
+
+    ```java
+    // previously we have to return the result or the value will be lost
+    public static String formatName(String name) {
+        return name.charAt(0).toUpperCase() + name.substring(1).toLowerCase();
+    }
+    ```
+
+    ```java
+    // In a class, we can directly modify name in another method if name is a data member.
+    private String name;
+
+    public static void formatName() {
+        name = name.charAt(0).toUpperCase() + name.substring(1).toLowerCase();
+    }
+    ```
+
+## 5. Use Class As A Datatype In Another Class
+
+A class can be treated as a user-defined data type, which means it can be used as a data member in another class.
+
+For example, define an `Address` class:
+
+```java
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
+public class Address {
+    private int aptNo;
+    private int streetNo;
+    private String street;
+    private String city;
+    private String zipcode;
+}
+```
+
+Then, we can use `Address` as a data member in the `Student` class:
+
+```java
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
+public class Student {
+    private String name;
+    private String gender;
+    private int age;
+    private Address address;    // a data member of Address class
+
+    private static String school = "VanierCollege";
+}
+```
+
+We can access a studentâ€™s address using the getter methods:
+
+```java
+public static void main(String[] args) {
+    Student student = new Student();
+
+    // check the address of the student
+    System.out.print(student.getAddress());
+
+    // check the city of of the address of the student
+    System.out.print(student.getAddress().getCity());
+}
+```
+
+This makes it clear that a class can encapsulate complex data and be reused as a type in other classes.
