@@ -14,6 +14,7 @@ public class Student {      // blueprint for creating a new data class
         2. Always non-static (no static)
         3. Always no return type (no void)
         4. The name MUST be the same as the class name (Student)
+        5. Usually overload
      */
 
     // Default constructor
@@ -27,6 +28,11 @@ public class Student {      // blueprint for creating a new data class
          */
 
 
+    }
+
+    // example for 'extends'
+    public void sayHi() {
+        System.out.println("Hi");
     }
 
 

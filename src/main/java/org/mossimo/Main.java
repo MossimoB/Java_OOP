@@ -1,7 +1,13 @@
 package org.mossimo;
 
+/*
+Inheritance
 
-public class Main {
+'extends' takes whatever is in Student and allows it
+to be used in the 'Main' class without having to rewrite everything
+ */
+
+public class Main extends Student {
     // method
     public static void main(String[] args) {
         // Student student;
@@ -19,6 +25,11 @@ public class Main {
          */
 
         Student s2 = new Student();
+        s2.sayHi();
+        /*
+        example for 'extends'
+         */
+
         Student s3 = new Student();
         Student s4 = new Student();
 
