@@ -6,7 +6,7 @@ public class Student {      // blueprint for creating a new data class
         System.out.println("Hi");
     }
 
-    // data member (field)
+    // data member (field) [private]
     private String name;
     private String gender;
     private int age;
@@ -42,12 +42,25 @@ public class Student {      // blueprint for creating a new data class
     // converts object to string
     // usually used for output
     public String toString() {
-        return String.format("Name: %s", "Gender: %s", "Age: %d", name, gender, age);
+        return String.format("Name: %s, Gender: %s, Age: %d", name, gender, age);
     }
 
     public boolean equals(Student student) {
         return this.name.equals(student.name) &&
             this.gender.equals(student.gender) &&
             this.age  == student.age;
+    }
+
+    // Getter
+    public String getName() {
+        return name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public int age() {
+        return age;
     }
 }
